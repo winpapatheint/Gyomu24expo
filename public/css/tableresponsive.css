@@ -1,0 +1,99 @@
+
+@media 
+only screen and (max-width: 1199px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+  /* Force table to not be like tables anymore */
+  table, thead, tbody, td, tr { 
+    display: block; 
+    text-align: end !important;
+  }
+
+
+  /* Force table to not be like tables anymore */
+  th { 
+    display: block; 
+    padding-right: 10px; 
+    text-align: left !important;
+  }
+
+  th::before {
+    content: "#";
+  }
+
+  table { 
+      padding-right: 15px;
+    padding-left: 15px;
+  
+  }
+
+  .table td, .table th {
+       padding: 5px 10px; 
+  }
+
+  th, td { 
+    border-top: unset !important; 
+    padding-right: 10px;
+    /*padding-top: unset !important;*/
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr { 
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .mobilehide {
+    display: none;
+  }
+  
+  tr:nth-child(odd) {background-color: #f2f2f2;}
+  tr { padding-bottom: 30px; border-top: 1px solid #868e96;}
+  
+  td { 
+    /* Behave  like a "row" */
+    border: none;
+    /*border-bottom: 1px solid #eee; */
+    position: relative;
+    padding-left: 35% !important; 
+  }
+  
+  td:before { 
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 15%; 
+    padding-right: 10px; 
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  /*
+  Label the data
+  */
+  td:nth-of-type(1):before { content: attr(data-label); }
+  td:nth-of-type(2):before { content: attr(data-label); }
+  td:nth-of-type(3):before { content: attr(data-label); }
+  td:nth-of-type(4):before { content: attr(data-label); }
+  td:nth-of-type(5):before { content: attr(data-label); }
+  td:nth-of-type(6):before { content: attr(data-label); }
+  td:nth-of-type(7):before { content: attr(data-label); }
+  td:nth-of-type(8):before { content: attr(data-label); }
+  td:nth-of-type(9):before { content: attr(data-label); }
+  td:nth-of-type(10):before { content: attr(data-label); }
+  td:nth-of-type(11):before { content: attr(data-label); }
+}
+
+
+@media 
+only screen and (max-width: 344px){
+
+  .paddingleftmobilehalf{
+    padding-left: 50% !important;  
+  }
+
+}

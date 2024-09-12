@@ -1,1 +1,0 @@
-# Gyomu24expo
