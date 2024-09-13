@@ -130,56 +130,70 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexexhibit()
-    {
+{
+    $limit = 10;
 
-        $limit = 10;
-        if (!empty($_GET['kword'])) {
-            $kword = $_GET['kword'];
-        } else {
-            $kword = '';
-        }    
+    // Retrieve and sanitize inputs
+    $kword = request()->input('kword', '');
+    $start = request()->input('start', '');
+    $end = request()->input('end', '');
 
-        if (!empty($_GET['start'])) {
-            $start = $_GET['start'];
-            $start = date("Y-m-d 00:00:00",strtotime($start));
-        } else {
-            $start = '';
-        } 
+    // Initialize variables for dates
+    $startdate = null;
+    $enddate = null;
 
-        if (!empty($_GET['end'])) {
-            $end = $_GET['end'];
-            $end = date("Y-m-d 23:59:59",strtotime($end));
-        } else {
-            $end = '';
-        } 
-
-        $startdate = new DateTime($start);
-        $enddate = new DateTime($end);
-
-        if($enddate < $startdate) {
-            return back()->with('errorsearch',__('user.datesearcherror'));
+    // Validate and format start date
+    if (!empty($start)) {
+        try {
+            $startdate = new DateTime($start);
+            //$start = $startdate->format('Y-m-d 00:00:00');
+        } catch (\Exception $e) {
+            // Handle invalid date format
+            return back()->with('errorsearch', __('user.invalid_start_date'));
         }
-
-        $exhibits = DB::table('exhibit')
-                    ->where(function($query) use ($kword , $start , $end){
-                        if (!empty($kword)) {
-                            $query->where('exhibit.taskno','LIKE','%'.$kword.'%')->orwhere('exhibit.name','LIKE','%'.$kword.'%');
-                        }
-                        if (!empty($start)) {
-                             $query->where('exhibit.taskdate', '>=',$start);
-                        }
-                        if (!empty($end)) {
-                             $query->where('exhibit.taskdate', '<',$end);
-                        }                       
-                     })
-                    ->orderBy('taskdate', 'desc')->paginate($limit);
-
-        // print_r($exhibits);die;
-        $ttl = $exhibits->total();
-        $ttlpage = (ceil($ttl / $limit));
-
-        return view('admin.indexexhibit',compact('exhibits','ttlpage','ttl'));
     }
+
+    // Validate and format end date
+    if (!empty($end)) {
+        try {
+            $enddate = new DateTime($end);
+            $end = $enddate->format('Y-m-d 23:59:59');
+        } catch (\Exception $e) {
+            // Handle invalid date format
+            return back()->with('errorsearch', __('user.invalid_end_date'));
+        }
+    }
+
+    // Check if end date is before start date
+    if ($startdate && $enddate && $enddate < $startdate) {
+        return back()->with('errorsearch', __('user.datesearcherror'));
+    }
+
+    // Build query
+    $exhibits = DB::table('exhibit')
+        ->where(function($query) use ($kword, $start, $end) {
+            if (!empty($kword)) {
+                $query->where('taskno', 'LIKE', '%' . $kword . '%')
+                      ->orWhere('name', 'LIKE', '%' . $kword . '%');
+            }
+            if (!empty($start)) {
+                $query->where('taskdate', '>=', $start);
+            }
+            if (!empty($end)) {
+                $query->where('taskdate', '<=', $end); // Ensure to include end date
+            }
+        })
+        ->orderBy('taskdate', 'desc')
+        ->paginate($limit);
+
+    // Calculate total pages
+    $ttl = $exhibits->total();
+    $ttlpage = ceil($ttl / $limit);
+
+    // Return view with data
+    return view('admin.indexexhibit', compact('exhibits', 'ttlpage', 'ttl'));
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -863,57 +877,68 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexnego()
-    {
-        $limit = 10;
-        if (!empty($_GET['kword'])) {
-            $kword = $_GET['kword'];
-        } else {
-            $kword = '';
-        }    
+{
+    $limit = 10;
 
+    // Retrieve and sanitize input values
+    $kword = $_GET['kword'] ?? '';
+    $start = $_GET['start'] ?? '';
+    $end = $_GET['end'] ?? '';
 
-        if (!empty($_GET['start'])) {
-            $start = $_GET['start'];
-            $start = date("Y-m-d 00:00:00",strtotime($start));
-        } else {
-            $start = '';
-        } 
-
-        if (!empty($_GET['end'])) {
-            $end = $_GET['end'];
-            $end = date("Y-m-d 23:59:59",strtotime($end));
-        } else {
-            $end = '';
-        } 
-
-        $startdate = new DateTime($start);
-        $enddate = new DateTime($end);
-
-        if($enddate < $startdate) {
-            return back()->with('errorsearch',__('user.datesearcherror'));
-        }
-
-        $negos = DB::table('nego')
-                    ->where(function($query) use ($kword , $start , $end){
-                        if (!empty($kword)) {
-                            // // $query->where('email','LIKE','%'.$kword.'%')->orwhere('name','LIKE','%'.$kword.'%');
-                            $query->where('name','LIKE','%'.$kword.'%');
-                        }
-                        if (!empty($start)) {
-                             $query->where('created_at', '>=',$start);
-                        }
-                        if (!empty($end)) {
-                             $query->where('created_at', '<',$end);
-                        }
-                     })
-                    ->orderBy('created_at', 'desc')->paginate($limit);
-
-
-        $ttl = $negos->total();
-        $ttlpage = (ceil($ttl / $limit));
-
-        return view('admin.indexnego',compact('negos','ttlpage','ttl'));
+    // Format dates if they are not empty
+    if (!empty($start)) {
+        $start = date("Y-m-d 00:00:00", strtotime($start));
+    } else {
+        $start = '';
     }
+
+    if (!empty($end)) {
+        $end = date("Y-m-d 23:59:59", strtotime($end));
+    } else {
+        $end = '';
+    }
+
+    // Create DateTime objects for validation
+    $startdate = !empty($start) ? new DateTime($start) : null;
+    $enddate = !empty($end) ? new DateTime($end) : null;
+
+    // Check if end date is earlier than start date
+    if ($startdate && $enddate && $enddate < $startdate) {
+        return back()->with('errorsearch', __('user.datesearcherror'));
+    }
+
+    // Query the database
+    $query = DB::table('nego')
+                ->where(function($query) use ($kword, $start, $end) {
+                    if (!empty($kword)) {
+                        // Replace 'productname' with the correct column name
+                        $query->where('productname', 'LIKE', '%' . $kword . '%');
+                    }
+                    if (!empty($start)) {
+                        $query->where('created_at', '>=', $start);
+                    }
+                    if (!empty($end)) {
+                        $query->where('created_at', '<=', $end); // Use <= to include the end date
+                    }
+                })
+                ->orderBy('created_at', 'desc');
+
+    // Debug: Print SQL query and bindings
+    // Uncomment the following lines to debug
+    // dd($query->toSql(), $query->getBindings());
+
+    // Execute the query and paginate results
+    $negos = $query->paginate($limit);
+
+    // Calculate pagination details
+    $ttl = $negos->total();
+    $ttlpage = ceil($ttl / $limit);
+
+    return view('admin.indexnego', compact('negos', 'ttlpage', 'ttl'));
+}
+
+    
+
 
 
     /**
@@ -1318,56 +1343,62 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexquotation()
-    {
-        $limit = 10;
-        if (!empty($_GET['kword'])) {
-            $kword = $_GET['kword'];
-        } else {
-            $kword = '';
-        }    
+{
+    $limit = 10;
 
+    // Retrieve and sanitize input values
+    $kword = $_GET['kword'] ?? '';
+    $start = $_GET['start'] ?? '';
+    $end = $_GET['end'] ?? '';
 
-        if (!empty($_GET['start'])) {
-            $start = $_GET['start'];
-            $start = date("Y-m-d 00:00:00",strtotime($start));
-        } else {
-            $start = '';
-        } 
-
-        if (!empty($_GET['end'])) {
-            $end = $_GET['end'];
-            $end = date("Y-m-d 23:59:59",strtotime($end));
-        } else {
-            $end = '';
-        } 
-
-        $startdate = new DateTime($start);
-        $enddate = new DateTime($end);
-
-        if($enddate < $startdate) {
-            return back()->with('errorsearch',__('user.datesearcherror'));
-        }
-
-        $lists = DB::table('quotation')
-                    ->where(function($query) use ($kword , $start , $end){
-                        if (!empty($kword)) {
-                            $query->where('timeid','LIKE','%'.$kword.'%')->orwhere('name','LIKE','%'.$kword.'%');
-                        }
-                        if (!empty($start)) {
-                             $query->where('date', '>=',$start);
-                        }
-                        if (!empty($end)) {
-                             $query->where('date', '<',$end);
-                        }
-                     })
-                    ->orderBy('created_at', 'desc')->paginate($limit);
-
-
-        $ttl = $lists->total();
-        $ttlpage = (ceil($ttl / $limit));
-
-        return view('admin.indexquotation',compact('lists','ttlpage','ttl'));
+    // Format dates if they are not empty
+    if (!empty($start)) {
+        $start = date("Y-m-d 00:00:00", strtotime($start));
+    } else {
+        $start = null;
     }
+
+    if (!empty($end)) {
+        $end = date("Y-m-d 23:59:59", strtotime($end));
+    } else {
+        $end = null;
+    }
+
+    // Create DateTime objects for validation
+    $startdate = $start ? new DateTime($start) : null;
+    $enddate = $end ? new DateTime($end) : null;
+
+    // Check if end date is earlier than start date
+    if ($startdate && $enddate && $enddate < $startdate) {
+        return back()->with('errorsearch', __('user.datesearcherror'));
+    }
+
+    // Query the database
+    $lists = DB::table('quotation')
+                ->where(function($query) use ($kword, $start, $end) {
+                    if (!empty($kword)) {
+                        $query->where(function($query) use ($kword) {
+                            $query->where('timeid', 'LIKE', '%' . $kword . '%')
+                                  ->orWhere('name', 'LIKE', '%' . $kword . '%');
+                        });
+                    }
+                    if (!empty($start)) {
+                        $query->where('date', '>=', $start);
+                    }
+                    if (!empty($end)) {
+                        $query->where('date', '<=', $end); // Use <= to include the end date
+                    }
+                })
+                ->orderBy('created_at', 'desc') // Ensure 'created_at' is a valid column
+                ->paginate($limit);
+
+    // Calculate pagination details
+    $ttl = $lists->total();
+    $ttlpage = ceil($ttl / $limit);
+
+    return view('admin.indexquotation', compact('lists', 'ttlpage', 'ttl'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -2996,6 +3027,8 @@ class AdminController extends Controller
         } else {
             // die('B');
             # code...
+            $data['updated_at'] = new \DateTime();
+
             $type = DB::table('hcompany')->where('id',$request->id)->update($data);
             $msg = '更新されました。';
         }
@@ -3267,62 +3300,63 @@ class AdminController extends Controller
      */
     public function editdata(Request $request, $role, $id)
     {
+        // Default to the authenticated user's role if $role is empty
         if (empty($role)) {
             $role = Auth::user()->role;
         }
-        //
+    
+        // Default to the authenticated user
         $edituser = Auth::user(); 
-
+        $editother = false;
+    
+        // Check if the ID length is greater than 5
         if (strlen($id) > 5) {
-
-            // print_r(substr($id, 5));die;
             $id = substr($id, 5);
             $edituser = DB::table('hcompany')
-                        ->where('id',$id)
-                        ->get();
-            $edituser = $edituser->toArray();
-            // $edituser = $edituser[0]; 
-            $edituser = (array) $edituser[0];       
-            // $edituser = $edituser->toArray();
-
-            $editother = true;
-
-        } else {
-            $editother = false;
+                        ->where('id', $id)
+                        ->first(); // Use first() instead of get() for a single record
+    
+            // If a record is found, convert it to an array
+            if ($edituser) {
+                $edituser = (array) $edituser;
+                $editother = true;
+            } else {
+                // Handle case when no record is found if necessary
+                $edituser = [];
+            }
         }
-
-        if ($role == 'host' OR $role == 'hcompany' OR $role == 'agent') {
-            if (isset($edituser->zoomapi)) {
-
-                $keyarr = json_decode($edituser->zoomapi);
-
+    
+        // Process Zoom API keys if the role is 'host', 'hcompany', or 'agent'
+        if (in_array($role, ['host', 'hcompany', 'agent'])) {
+            if (isset($edituser['zoomapi'])) {
+                $keyarr = json_decode($edituser['zoomapi']);
+    
                 if (!empty($keyarr->keyone)) {
                     $edituser['keyone'] = $keyarr->keyone;
                 }
-
+    
                 if (!empty($keyarr->keytwo)) {
                     $edituser['keytwo'] = $keyarr->keytwo;
                 }
-
             }
         }
-
-
-        // print_r($edituser);die;
+    
+        // Determine which view to return based on the role
         $editmode = true;
-
-        if ($role == 'admin') {
-            return view('admin.editprofile',compact('editmode','editother','edituser'));
-        } else if ($role == 'hcompany' OR $role == 'agent') {
-            return view('admin.registerhcompany',compact('editmode','editother','edituser'));
-        } else if ($role == 'host') {
-            return view('hcompany.registerhost',compact('editmode','editother','edituser'));
-        } else {
-            return view('user.editprofile',compact('editmode','editother','edituser'));
+    
+        switch ($role) {
+            case 'admin':
+                return view('admin.editprofile', compact('editmode', 'editother', 'edituser'));
+            case 'hcompany':
+            case 'agent':
+                return view('admin.registerhcompany', compact('editmode', 'editother', 'edituser'));
+            case 'host':
+                return view('hcompany.registerhost', compact('editmode', 'editother', 'edituser'));
+            default:
+                return view('user.editprofile', compact('editmode', 'editother', 'edituser'));
         }
     }
-
-
+    
     /**
      * Update the specified resource in storage.
      *
