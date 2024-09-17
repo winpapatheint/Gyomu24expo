@@ -130,69 +130,69 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function indexexhibit()
-{
-    $limit = 10;
+    {
+        $limit = 10;
 
-    // Retrieve and sanitize inputs
-    $kword = request()->input('kword', '');
-    $start = request()->input('start', '');
-    $end = request()->input('end', '');
+        // Retrieve and sanitize inputs
+        $kword = request()->input('kword', '');
+        $start = request()->input('start', '');
+        $end = request()->input('end', '');
 
-    // Initialize variables for dates
-    $startdate = null;
-    $enddate = null;
+        // Initialize variables for dates
+        $startdate = null;
+        $enddate = null;
 
-    // Validate and format start date
-    if (!empty($start)) {
-        try {
-            $startdate = new DateTime($start);
-            //$start = $startdate->format('Y-m-d 00:00:00');
-        } catch (\Exception $e) {
-            // Handle invalid date format
-            return back()->with('errorsearch', __('user.invalid_start_date'));
+        // Validate and format start date
+        if (!empty($start)) {
+            try {
+                $startdate = new DateTime($start);
+                //$start = $startdate->format('Y-m-d 00:00:00');
+            } catch (\Exception $e) {
+                // Handle invalid date format
+                return back()->with('errorsearch', __('user.invalid_start_date'));
+            }
         }
-    }
 
-    // Validate and format end date
-    if (!empty($end)) {
-        try {
-            $enddate = new DateTime($end);
-            $end = $enddate->format('Y-m-d 23:59:59');
-        } catch (\Exception $e) {
-            // Handle invalid date format
-            return back()->with('errorsearch', __('user.invalid_end_date'));
+        // Validate and format end date
+        if (!empty($end)) {
+            try {
+                $enddate = new DateTime($end);
+                $end = $enddate->format('Y-m-d 23:59:59');
+            } catch (\Exception $e) {
+                // Handle invalid date format
+                return back()->with('errorsearch', __('user.invalid_end_date'));
+            }
         }
+
+        // Check if end date is before start date
+        if ($startdate && $enddate && $enddate < $startdate) {
+            return back()->with('errorsearch', __('user.datesearcherror'));
+        }
+
+        // Build query
+        $exhibits = DB::table('exhibit')
+            ->where(function($query) use ($kword, $start, $end) {
+                if (!empty($kword)) {
+                    $query->where('taskno', 'LIKE', '%' . $kword . '%')
+                        ->orWhere('name', 'LIKE', '%' . $kword . '%');
+                }
+                if (!empty($start)) {
+                    $query->where('taskdate', '>=', $start);
+                }
+                if (!empty($end)) {
+                    $query->where('taskdate', '<=', $end); // Ensure to include end date
+                }
+            })
+            ->orderBy('taskdate', 'desc')
+            ->paginate($limit);
+
+        // Calculate total pages
+        $ttl = $exhibits->total();
+        $ttlpage = ceil($ttl / $limit);
+
+        // Return view with data
+        return view('admin.indexexhibit', compact('exhibits', 'ttlpage', 'ttl'));
     }
-
-    // Check if end date is before start date
-    if ($startdate && $enddate && $enddate < $startdate) {
-        return back()->with('errorsearch', __('user.datesearcherror'));
-    }
-
-    // Build query
-    $exhibits = DB::table('exhibit')
-        ->where(function($query) use ($kword, $start, $end) {
-            if (!empty($kword)) {
-                $query->where('taskno', 'LIKE', '%' . $kword . '%')
-                      ->orWhere('name', 'LIKE', '%' . $kword . '%');
-            }
-            if (!empty($start)) {
-                $query->where('taskdate', '>=', $start);
-            }
-            if (!empty($end)) {
-                $query->where('taskdate', '<=', $end); // Ensure to include end date
-            }
-        })
-        ->orderBy('taskdate', 'desc')
-        ->paginate($limit);
-
-    // Calculate total pages
-    $ttl = $exhibits->total();
-    $ttlpage = ceil($ttl / $limit);
-
-    // Return view with data
-    return view('admin.indexexhibit', compact('exhibits', 'ttlpage', 'ttl'));
-}
 
 
     /**
@@ -925,7 +925,7 @@ class AdminController extends Controller
 
     // Debug: Print SQL query and bindings
     // Uncomment the following lines to debug
-    // dd($query->toSql(), $query->getBindings());
+    
 
     // Execute the query and paginate results
     $negos = $query->paginate($limit);
@@ -1183,7 +1183,7 @@ class AdminController extends Controller
                     ->where('for','companyinfo')
                     ->get();
 
-        $companyinfo = $companyinfo->pluck('value', 'title');
+        //$companyinfo = $companyinfo->pluck('value', 'title');
 
         // print_r($data);die;
         return view('invoicetemplate',compact('data','companyinfo'));
@@ -1253,9 +1253,7 @@ class AdminController extends Controller
      */
     public function storeinvoice(Request $request)
     {
-
         // print_r($request->all());die;
-
         $data=array('timeid'=>$request->timeid,
                     'date'=>$request->date,
                     'name'=>$request->name,
@@ -1293,16 +1291,8 @@ class AdminController extends Controller
             DB::table('invoice')->where('id',$request->id)->update($data);
             $msg = '更新されました。';
         }
-
         return redirect('/admin/invoice')->with('success',$msg);
     }
-
-
-
-
-
-
-
 
     /**
      * Display a listing of the resource.
@@ -1479,10 +1469,8 @@ class AdminController extends Controller
      */
     public function editdoc(Request $request, $role, $id)
     {
-
         $hcompanies = DB::table('hcompany')
                     ->orderBy('created_at', 'desc')->paginate(9999);
-
         $editmode = false;
         $data = array();
         $data['hcompany'] = 0;
@@ -1490,7 +1478,6 @@ class AdminController extends Controller
             $data = DB::table($role)
                     ->find($id);
             $data = (array) $data;
-            // die('2121');
             $data['label'] = (array) json_decode($data['label']);
             $data['quantity'] = (array) json_decode($data['quantity']);
             $data['unit'] = (array) json_decode($data['unit']);
@@ -1499,12 +1486,8 @@ class AdminController extends Controller
             // print_r($data);die;
             $editmode = true;
         }
-
         return view('admin.register'.$role,compact('hcompanies','editmode','data'));
-
     }
-
-
     public function foremployee()
     {  
 

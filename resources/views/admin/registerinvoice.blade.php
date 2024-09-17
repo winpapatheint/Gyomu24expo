@@ -240,7 +240,7 @@
 
             <div class="text-center">
                 <button class="btn btn-submit" type="button" role="button" data-toggle="modal">
-                <!-- <button class="btn" type="button" role="button" data-toggle="modal" data-target="#detailModal"> -->
+                
               @if (!$editmode)  
                     <i class="fa fa-user-plus" aria-hidden="true"></i>
                    情報を登録する
@@ -269,9 +269,6 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                      </div>
-                <!--      <div class="modal-body">
-                        <p>選択したセミナーを削除してはよろしいですか。</p>
-                     </div> -->
                      <div class="modal-footer">
 
                         <button type="submit" class="btn btn-primary">
@@ -403,7 +400,7 @@
                     if (($(this).val() == '') ||($(this).val() == 'null')) {
                        $('.error.'+$(this).attr("id")).show();
                        cansubmit = false;
-                       alert($(this).attr("id"));
+                     //   alert($(this).attr("id"));
                     }
                     // else {
                     //     alert('Everything has a value.');

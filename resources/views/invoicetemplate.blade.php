@@ -15,8 +15,6 @@ table.border,table.border th,table.border td {
   <div class="page">
     <!-- Your content here -->
     <h1 style="text-align: center;">請 求 書</h1>
-    
-
     <table style="width: 100%;">
       <tr>
         <th style="text-align: left;width: 60%;"><h3>{{ $data['hcompany'] }}    御中</h3></th>
@@ -55,18 +53,7 @@ table.border,table.border th,table.border td {
         <td>&nbsp;</td>
         <td colspan="2" rowspan="5">{{ $companyinfo['companyname'] }}<br>{{ $companyinfo['postalcode'] }}<br>{{ $companyinfo['address'] }}<br>{{ $companyinfo['addressextra'] }}<br>担当者：　{{ $companyinfo['picname'] }}<br>TEL:  {{ $companyinfo['phone'] }}</td>
       </tr>
-<!--       <tr>
-        <td>納　　　　　　期：{{ $data['duenote'] }}</td>
-      </tr>
-      <tr>
-        <td>納　入　場　所：{{ $data['placedelivery'] }}</td>
-      </tr>
-      <tr>
-        <td>支　払　条　件：{{ $data['term'] }}</td>
-      </tr>
-      <tr>
-        <td>見積有効期限：{{ $data['duedate'] }}</td>
-      </tr> -->
+
       <tr>
         <td>件名：{{ $data['name'] }}</td>
       </tr>
