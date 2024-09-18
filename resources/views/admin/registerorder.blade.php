@@ -17,10 +17,6 @@
 
       
       <section class="ts-contact-form">
-
-
-
-
                   @php $action= route('registerorder'); @endphp
                   <form id="order-form" class="contact-form" method="POST" action="{{ $action }}">
                   @csrf
@@ -28,9 +24,7 @@
                   @if ($editmode)
                   <input type="hidden" name="id" value="{{ $data['id'] ?? '' }}">
                   @endif
-
          <div class="container">
-
             <div class="row">
                <div class="col-lg-10 mx-auto text-center">
                   <h3>@if (!$editmode) 新規登録 @else 注文修正 @endif</h3>
@@ -38,10 +32,7 @@
             </div>
             <div class="row">
                <div class="col-lg-10 mx-auto">
-
-
                      <div class="error-container"></div>
-
                      <div class="row ">
                         <div class="col-md-6">
                            <div class="form-group">
@@ -49,7 +40,6 @@
                               <label for="gender_select"><b>注文書番号</b> <span class="badge badge-danger">必須</span></label>
                               <input class="form-control form-control-password required" placeholder="{{ __('注文書番号') }}" name="timeid" id="timeid"
                                  type="text" value="{{ old('timeid') ?? $data['timeid'] ?? date('ymdHis') }}">
-                                  
                            </div>
                         </div>
                         <div class="col-md-6">
@@ -62,7 +52,6 @@
                            </div>
                         </div>
                      </div>
-
 
                      <div class="row ">
                         <div class="col-md-12 mx-auto">
@@ -373,10 +362,7 @@
             x = $('a.deleterow').last().data("id");
             x = x+1;
             // alert(x);
-
             $( "#tableproduct" ).append(' <div class="row" id="row'+x+'"> <div class="col-md-4"> <div class="form-group"> <a class="btnlist btn-secondary deleterow" data-id="'+x+'" href="#" role="button" data-toggle="modal"><i class="fa fa-times" aria-hidden="true"></i></a> <span style="display:none" class="label'+x+' error text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span> <label for="gender_select"><b>項目</b> <span class="badge badge-danger">必須</span></label> <input class="form-control form-control-password required" placeholder="'+x+') 項目" name="label['+x+']" id="label'+x+'" type="text"> </div></div><div class="col-md-2"> <div class="form-group"> <span style="display:none" class="quantity'+x+' error text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span> <label for="end"><b>数量</b></label> <span class="badge badge-danger">必須</span></label> <input class="form-control form-control-password totalrowcheck required" data-id="'+x+'" placeholder="数量" name="quantity['+x+']" id="quantity'+x+'" type="text"> </div></div><div class="col-md-2"> <div class="form-group"> <label for="end"><b>単位</b></label></label> <input class="form-control form-control-password" placeholder="単位" name="unit['+x+']" id="unit'+x+'" type="text"> </div></div><div class="col-md-2"> <div class="form-group"> <span style="display:none" class="priceperunit'+x+' error text-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span> <label for="end"><b>単価</b></label> <span class="badge badge-danger">必須</span></label> <input class="form-control form-control-password totalrowcheck required" data-id="'+x+'" placeholder="単価" name="priceperunit['+x+']" id="priceperunit'+x+'" type="text"> </div></div><div class="col-md-2"> <div class="form-group"> <label for="end"><b>金額</b></label></label> <input readonly class="form-control form-control-password" placeholder="金額" name="totalrow['+x+']" id="totalrow'+x+'" type="text"> </div></div></div>');
-
-
 
         });
 
@@ -417,7 +403,7 @@
                     if (($(this).val() == '') ||($(this).val() == 'null')) {
                        $('.error.'+$(this).attr("id")).show();
                        cansubmit = false;
-                       alert($(this).attr("id"));
+                       //alert($(this).attr("id"));
                     }
                     // else {
                     //     alert('Everything has a value.');
@@ -429,12 +415,8 @@
                   $('#detailModal').modal('show');
                   // $( "#order-form" ).submit();
                }
-          
            }); 
-       
     });
-
-
 </script>
 
 </x-auth-layout>
