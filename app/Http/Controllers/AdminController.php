@@ -80,7 +80,7 @@ class AdminController extends Controller
                 $info = array('name'=>$value->name);
                 $mail = Mail::send([], $info, function($message) use ($value, $data) {
                    $message->to($value->email,$value->name)->subject($data->name);
-                   $message->from('info@24expo-japan.com','24expo-japan.com');
+                   $message->from('info-test@asia-hd.com','test-gyomu.24expo-japan.com');
                    $message->setBody("以下、展示情報をご案内いたします。
                    \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
                    \r\n商品名：　".$data->name."
@@ -89,7 +89,7 @@ class AdminController extends Controller
 
                    \r\n"."カテゴリー：　".__(config('global.category')[$data->category])."
                    \r\n
-                   \r\n"."備考欄：　"."　
+                   \r\n"."商品詳細：　"."　
                    \r\n".str_replace("<br />","\r\n",$data->taskcontent)."
                    \r\n
 
