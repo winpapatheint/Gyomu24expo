@@ -83,9 +83,9 @@ class AdminController extends Controller
                    $message->from('info@24expo-japan.com','24expo-japan.com');
                    $message->setBody("以下、展示情報をご案内いたします。
                    \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-                   \r\n出展名：　".$data->name."
-                   \r\n出展番号：　".$data->taskno."
-                   \r\n"."出展日：　".$data->taskdate."
+                   \r\n商品名：　".$data->name."
+                   \r\n商品番号：　".$data->taskno."
+                   \r\n"."商品日：　".$data->taskdate."
 
                    \r\n"."カテゴリー：　".__(config('global.category')[$data->category])."
                    \r\n
