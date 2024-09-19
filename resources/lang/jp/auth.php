@@ -303,7 +303,7 @@ return [
     'companycontent' => '事業内容',
     'url' => 'ホームページURL',
     'sns' => 'SNSアカウント',
-    'remarks' => '備考欄',
+    'remarks' => '商品詳細',
 
     'occupation' => '役職',
     'occupation0' => '選択してください',

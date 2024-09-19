@@ -217,10 +217,10 @@ class AdminController extends Controller
         // print_r("$request->check");die;
         $validator = Validator::make($request->all(), $check,
         [
-            'name.required' => __('出展名を入力してください'),
-            'taskno.required' => __('出展番号を入力してください'),
-            'taskdate.required' => __('出展日を入力してください'),
-            'taskcontent.required' => __('出展内容/商材を入力してください'),
+            'name.required' => __('商品名を入力してください'),
+            'taskno.required' => __('商品番号を入力してください'),
+            'taskdate.required' => __('商品日を入力してください'),
+            'taskcontent.required' => __('商品詳細を入力してください'),
             'description.required' => __('validation.pleasefillexhibitmsg'),
         ]);
 

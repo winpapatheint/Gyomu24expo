@@ -57,18 +57,18 @@
                            </div>
                         </div>
                         <div class="col-md-6">
-                        <label for="taskdate"><b>登録日</b> <span class="badge badge-danger">必須</span></label>
+                        <label for="taskdate"><b>商品日</b> <span class="badge badge-danger">必須</span></label>
                            <div class="form-group">
-                              <input class="form-control form-control-name" placeholder="{{ __('登録日') }}" name="taskdate" id="taskdate"
+                              <input class="form-control form-control-name" placeholder="{{ __('商品日') }}" name="taskdate" id="taskdate"
                                  type="date" value="{{ old('taskdate') ?? $edituser['taskdate'] ?? '' }}" style="line-height: 2.0;">
                               <p class="error taskdate text-danger"></p>                               
                            </div>
                         </div>
                      </div>
 
-                     <label for="email"><b>{{ __('商品者名') }}</b></label>
+                     <label for="email"><b>{{ __('登録者') }}</b></label>
                      <div class="form-group">
-                        <input class="form-control form-control-name" placeholder="{{ __('商品者名') }}" name="taskauthor" id="taskauthor"
+                        <input class="form-control form-control-name" placeholder="{{ __('登録者') }}" name="taskauthor" id="taskauthor"
                            type="text" value="{{ old('taskauthor') ?? $edituser['taskauthor'] ?? '' }}" style="line-height: 2.0;">
                         <p class="error taskauthor text-danger"></p>                               
                      </div>
@@ -169,7 +169,7 @@
                      <div class="row ">
                         <div class="col-md-12 mx-auto">
                            <div class="form-group">
-                              <label for="taskcontent"><b>{{ __('商品内容/商材') }}</b> <span class="badge badge-danger">{{ __('auth.required') }}</span></label>
+                              <label for="taskcontent"><b>{{ __('商品詳細') }}</b> <span class="badge badge-danger">{{ __('auth.required') }}</span></label>
                               <textarea class="form-control form-control-message" id="taskcontenttextarea" rows="6">{!! str_replace("<br />","&#013;",old('taskcontent') ?? $edituser['taskcontent'] ?? '')  !!}</textarea>
                                 <p style="display:none" class="taskcontent error text-danger"></p>
                                 <input type="hidden" name="taskcontent" id="taskcontent" value="{!! old('taskcontent') ?? $edituser['taskcontent'] ?? '' !!}">

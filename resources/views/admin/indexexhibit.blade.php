@@ -172,10 +172,10 @@ only screen and (max-width: 430px){
                            <img id="preview-imagefou" alt="your imagefou" src="{{ asset('images/'.($exhibit->imagefou)   ) }}" style="max-width: 100%;"/>
                            @endif
 
-                           <p> {{ __('商品日') }} : {{  $exhibit->name }}</p>
+                           <p> {{ __('商品名') }} : {{  $exhibit->name }}</p>
                            <p> {{ __('商品番号') }} : {{  $exhibit->taskno }}</p>
-                           <p> {{ __('登録日') }} : {{  $exhibit->taskdate }}</p>
-                           <p> {{ __('商品者') }} : {{  $exhibit->taskauthor }}</p>
+                           <p> {{ __('商品日') }} : {{  $exhibit->taskdate }}</p>
+                           <p> {{ __('都録者') }} : {{  $exhibit->taskauthor }}</p>
                            <p> {{ __('カテゴリー') }} : {{ __(config('global.category')[$exhibit->category]) }}</p>
                            <p> {{ __('auth.remarks') }} : <br>{!!  $exhibit->taskcontent !!}</p>    
 
