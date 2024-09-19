@@ -144,7 +144,7 @@ print_r(session()->all());
                      <!-- footer social end-->
                      <div class="footer-menu text-center mb-25">
                         <ul>
-                           <li>24EXPOジャパン株式会社</li>
+                           <li>アジア人材開発株式会社</li>
                            <!-- <li><a href="{{ url('/gallery') }}">写真集</a></li> -->
 <!--                            <li><a href="{{ url('/news') }}">{{ __('headfoot.titleblog') }}</a></li>
                            <li><a href="{{ url('/faq') }}">{{ __('headfoot.ttlefaq') }}</a></li>

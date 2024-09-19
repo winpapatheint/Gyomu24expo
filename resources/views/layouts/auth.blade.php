@@ -494,7 +494,7 @@ print_r(session()->all());
 
                      <div class="footer-menu text-center mb-25">
                         <ul>
-                           <li>24EXPOジャパン株式会社</li>
+                           <li>アジア人材開発株式会社</li>
                         </ul>
                      </div><!-- footer menu end-->
 
