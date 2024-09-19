@@ -20,7 +20,7 @@ only screen and (max-width: 430px){
 
 </style>
 
-      @php $subtitle="出展管理"; @endphp
+      @php $subtitle="商品管理"; @endphp
       @include('components.subtitle')
 
       <section class="ts-contact-form">
@@ -28,7 +28,7 @@ only screen and (max-width: 430px){
             <div class="row">
                <div class="col-lg-8 mx-auto">
                   <h2 class="section-title text-center mb-5">
-                     出展一覧
+                     商品一覧
                   </h2>
                </div><!-- col end-->
             </div>
@@ -49,7 +49,7 @@ only screen and (max-width: 430px){
                         <div class="col-md-12 mx-auto">
                            <div class="form-group">
                               <label for="email">検索キーワード</label>
-                              <input class="form-control form-control-email" placeholder="出展名・出展番号" name="kword" id="kword"
+                              <input class="form-control form-control-email" placeholder="商品名・商品番号" name="kword" id="kword"
                                  type="text" value="{{ $_GET['kword'] ?? '' }}">
                            </div>
                         </div>
@@ -87,9 +87,9 @@ only screen and (max-width: 430px){
                      <thead>
                         <tr>
                            <th scope="col">#</th>
-                          <th scope="col">出展日</th>
-                          <th scope="col">出展名</th>
-                          <th scope="col">出展番号</th>
+                          <th scope="col">登録日</th>
+                          <th scope="col">商品名</th>
+                          <th scope="col">商品番号</th>
                           <th style="min-width: 130px" scope="col">カテゴリー</th>
                           <th style="min-width: 218px" scope="col">アクション</th>
                         </tr>
@@ -101,9 +101,9 @@ only screen and (max-width: 430px){
                         @foreach( $exhibits as $key => $exhibit )
                         <tr>
                           <th scope="row">{{ ($ttl+1) - ($exhibits->firstItem() + $key) }}</th>
-                          <td data-label="出展日">{{ $exhibit->taskdate }}</td>
-                          <td data-label="出展名">{{ $exhibit->name }}</td>
-                          <td data-label="出展番号">{{ $exhibit->taskno }}</td>
+                          <td data-label="登録日">{{ $exhibit->taskdate }}</td>
+                          <td data-label="商品名">{{ $exhibit->name }}</td>
+                          <td data-label="商品番号">{{ $exhibit->taskno }}</td>
                           <td data-label="カテゴリー">{{ __(config('global.category')[$exhibit->category]) }}</td>
                           <td data-label="アクション">
                               <!-- <a class="btn btn-primary" href="seminar_detail_host.html" role="button">詳細</a> -->
@@ -149,7 +149,7 @@ only screen and (max-width: 430px){
                   <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h4 class="modal-title" id="detailModalLabel">出展の詳細</h4>
+                        <h4 class="modal-title" id="detailModalLabel">商品の詳細</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -172,10 +172,10 @@ only screen and (max-width: 430px){
                            <img id="preview-imagefou" alt="your imagefou" src="{{ asset('images/'.($exhibit->imagefou)   ) }}" style="max-width: 100%;"/>
                            @endif
 
-                           <p> {{ __('氏名') }} : {{  $exhibit->name }}</p>
-                           <p> {{ __('出展番号') }} : {{  $exhibit->taskno }}</p>
-                           <p> {{ __('出展日') }} : {{  $exhibit->taskdate }}</p>
-                           <p> {{ __('出展者') }} : {{  $exhibit->taskauthor }}</p>
+                           <p> {{ __('商品日') }} : {{  $exhibit->name }}</p>
+                           <p> {{ __('商品番号') }} : {{  $exhibit->taskno }}</p>
+                           <p> {{ __('登録日') }} : {{  $exhibit->taskdate }}</p>
+                           <p> {{ __('商品者') }} : {{  $exhibit->taskauthor }}</p>
                            <p> {{ __('カテゴリー') }} : {{ __(config('global.category')[$exhibit->category]) }}</p>
                            <p> {{ __('auth.remarks') }} : <br>{!!  $exhibit->taskcontent !!}</p>    
 
@@ -192,7 +192,7 @@ only screen and (max-width: 430px){
                   <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h4 class="modal-title" id="deleteConfirmModalLabel">出展を削除</h4>
+                        <h4 class="modal-title" id="deleteConfirmModalLabel">商品を削除</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -216,7 +216,7 @@ only screen and (max-width: 430px){
                   <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h4 class="modal-title" id="sendemailLabel">出展情報を送信</h4>
+                        <h4 class="modal-title" id="sendemailLabel">商品情報を送信</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
