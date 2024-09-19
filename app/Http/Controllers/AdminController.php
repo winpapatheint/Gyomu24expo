@@ -80,7 +80,7 @@ class AdminController extends Controller
                 $info = array('name'=>$value->name);
                 $mail = Mail::send([], $info, function($message) use ($value, $data) {
                    $message->to($value->email,$value->name)->subject($data->name);
-                   $message->from('info-test@asia-hd.com','test-gyomu.24expo-japan.com');
+                   $message->from('info-test@asia-hd.com','test-gyomu.24expo-japan.comgit ');
                    $message->setBody("以下、展示情報をご案内いたします。
                    \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
                    \r\n商品名：　".$data->name."
