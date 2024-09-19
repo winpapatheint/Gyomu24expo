@@ -486,7 +486,7 @@ print_r(session()->all());
                            <li><a href="{{ url('/edit/'.auth()->user()->role.'/'.rand ( 10000 , 99999 )) }}">{{ __('welcome.profileedit') }}</a></li> -->
                           @else                      
                            <li><a href="{{ url('/schedule') }}">スケジュール</a></li>
-                           <li><a href="{{ url('/admin/exhibit') }}">出展管理</a></li>
+                           <li><a href="{{ url('/admin/exhibit') }}">商品管理</a></li>
                            <!-- <li><a href="{{ url('/admin/events') }}">授業一覧</a></li> -->
                           @endif
                         </ul>
