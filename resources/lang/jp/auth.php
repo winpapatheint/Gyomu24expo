@@ -126,9 +126,9 @@ return [
 
     'agerange' => '年齢代',
     'agerange0' => '選択してください',
-    'agerange1' => '出展者',
-    'agerange2' => 'バイヤー',
-    'agerange3' => 'エージェント',
+    'agerange1' => '販売者',
+    'agerange2' => '購入者',
+    'agerange3' => '代理店',
     'agerange4' => 'その他',
     // 'agerange5' => '50代',
     // 'agerange6' => '60代以上',
