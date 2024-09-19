@@ -205,7 +205,7 @@ print_r(session()->all());
 
                      @if(auth()->user()->role == 'admin')
 
-                     <li class="nav-item"><a href="{{ url('/admin/exhibit') }}">出展管理</a></li>
+                     <li class="nav-item"><a href="{{ url('/admin/exhibit') }}">商品管理</a></li>
                      <li class="nav-item"><a href="{{ url('/admin/agent') }}">顧客管理</a></li>
                      <li class="nav-item"><a href="{{ url('/admin/pic') }}">担当者管理</a></li>
                      <li class="nav-item"><a href="{{ url('/admin/nego') }}">商談管理</a></li>
