@@ -1,18 +1,23 @@
 <x-auth-layout>
 
-      @php $subtitle=__('出展管理'); @endphp
+      @php $subtitle=__('商品管理'); @endphp
       @include('components.subtitle')
 
       <section class="ts-contact-form">
          <div class="container">
             <div class="row">
                <div class="col-lg-8 mx-auto">
-                  <h2 class="section-title text-center">
-                     <!-- <span>出展</span> -->
-                     {{ __('出展登録') }}
-                  </h2>
+                   @if (!empty($edituser['id']))
+                       <h2 class="section-title text-center">
+                           {{ __('商品修正') }} <!-- This is for editing -->
+                       </h2>
+                   @else
+                       <h2 class="section-title text-center">
+                           {{ __('商品登録') }} <!-- This is for registration -->
+                       </h2>
+                   @endif
                </div><!-- col end-->
-            </div>
+           </div>
             <div class="row">
 
 
@@ -35,7 +40,7 @@
                     @endif
 
                      <div class="error-container"></div>
-                     <label for="name"><b>{{ __('出展名') }}</b> <span class="badge badge-danger">必須</span></label>
+                     <label for="name"><b>{{ __('商品名') }}</b> <span class="badge badge-danger">必須</span></label>
                      <div class="form-group">
                         <input class="form-control form-control-name" placeholder="{{ __('user.taskname') }}" name="name" id="name"
                            type="text" value="{{ old('name') ?? $edituser['name'] ?? '' }}"  style="line-height: 2.0;">
@@ -44,26 +49,26 @@
 
                      <div class="row">
                         <div class="col-md-6">
-                        <label for="taskno"><b>出展番号</b> <span class="badge badge-danger">必須</span></label>
+                        <label for="taskno"><b>商品番号</b> <span class="badge badge-danger">必須</span></label>
                            <div class="form-group">
-                              <input class="form-control form-control-name" placeholder="{{ __('出展番号') }}" name="taskno" id="taskno"
+                              <input class="form-control form-control-name" placeholder="{{ __('商品番号') }}" name="taskno" id="taskno"
                                  type="text" value="{{ old('taskno') ?? $edituser['taskno'] ?? '' }}" style="line-height: 2.0;">
                               <p class="error taskno text-danger"></p>                          
                            </div>
                         </div>
                         <div class="col-md-6">
-                        <label for="taskdate"><b>出展日</b> <span class="badge badge-danger">必須</span></label>
+                        <label for="taskdate"><b>登録日</b> <span class="badge badge-danger">必須</span></label>
                            <div class="form-group">
-                              <input class="form-control form-control-name" placeholder="{{ __('出展日') }}" name="taskdate" id="taskdate"
+                              <input class="form-control form-control-name" placeholder="{{ __('登録日') }}" name="taskdate" id="taskdate"
                                  type="date" value="{{ old('taskdate') ?? $edituser['taskdate'] ?? '' }}" style="line-height: 2.0;">
                               <p class="error taskdate text-danger"></p>                               
                            </div>
                         </div>
                      </div>
 
-                     <label for="email"><b>{{ __('出展者名') }}</b></label>
+                     <label for="email"><b>{{ __('商品者名') }}</b></label>
                      <div class="form-group">
-                        <input class="form-control form-control-name" placeholder="{{ __('出展者名') }}" name="taskauthor" id="taskauthor"
+                        <input class="form-control form-control-name" placeholder="{{ __('商品者名') }}" name="taskauthor" id="taskauthor"
                            type="text" value="{{ old('taskauthor') ?? $edituser['taskauthor'] ?? '' }}" style="line-height: 2.0;">
                         <p class="error taskauthor text-danger"></p>                               
                      </div>
@@ -164,7 +169,7 @@
                      <div class="row ">
                         <div class="col-md-12 mx-auto">
                            <div class="form-group">
-                              <label for="taskcontent"><b>{{ __('出展内容/商材') }}</b> <span class="badge badge-danger">{{ __('auth.required') }}</span></label>
+                              <label for="taskcontent"><b>{{ __('商品内容/商材') }}</b> <span class="badge badge-danger">{{ __('auth.required') }}</span></label>
                               <textarea class="form-control form-control-message" id="taskcontenttextarea" rows="6">{!! str_replace("<br />","&#013;",old('taskcontent') ?? $edituser['taskcontent'] ?? '')  !!}</textarea>
                                 <p style="display:none" class="taskcontent error text-danger"></p>
                                 <input type="hidden" name="taskcontent" id="taskcontent" value="{!! old('taskcontent') ?? $edituser['taskcontent'] ?? '' !!}">
@@ -176,7 +181,7 @@
                      <div class="text-center"><br>
 
                         @if (!empty($edituser['id']))
-                        <button class="btn btn-submit" type="submit" data-askconfirmtitle="{{ __('出展を更新') }}" data-askconfirmtext="{{ __('更新しますか？') }}" data-yes="{{ __('更新する') }}"> {{ __('更新する') }}</button>
+                        <button class="btn btn-submit" type="submit" data-askconfirmtitle="{{ __('商品を更新') }}" data-askconfirmtext="{{ __('更新しますか？') }}" data-yes="{{ __('更新する') }}"> {{ __('更新する') }}</button>
                         @else
                         <button class="btn btn-submit" type="submit" data-askconfirmtitle="{{ __('user.applytitle') }}" data-askconfirmtext="{{ __('user.applytext') }}" data-yes="{{ __('user.dorequest') }}"> {{ __('user.dorequest') }}</button>
                         @endif
