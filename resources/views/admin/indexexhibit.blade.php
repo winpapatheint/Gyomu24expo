@@ -82,7 +82,7 @@ only screen and (max-width: 430px){
 
             <!-- Seminar list-->
             <div class="row">
-               <div class="table-responsive">
+               <div class="table-responsive" style="overflow-x: auto;">
                   <table class="table">
                      <thead>
                         <tr>

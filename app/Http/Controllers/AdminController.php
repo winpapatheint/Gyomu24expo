@@ -61,7 +61,6 @@ class AdminController extends Controller
         // $data = (array) $data;
 
         // print_r($data);die;
-
         $agerange = $request->agerange;
         $pics = DB::table('pic')
                     ->where(function($query) use ($agerange){
@@ -72,7 +71,6 @@ class AdminController extends Controller
                     ->orderBy('created_at', 'desc')->paginate(9999);
         // print_r($pics);die;
         
-
         foreach ($pics as $key => $value) {
             // echo $value->email;
             // echo $value->name;
@@ -99,11 +97,7 @@ class AdminController extends Controller
 
               // print_r($mail);die;
               $msg = __('contact.donesend');
-
-
         }
-
-
         return redirect('/admin/exhibit')->with('success','一斉に送信されました。');
         
     }
