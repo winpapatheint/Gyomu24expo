@@ -1,6 +1,34 @@
 <x-auth-layout>
 
+
 <link rel="stylesheet" href="{{ asset('css/tableresponsive.css') }}">
+<style>
+    .small-alert {
+        max-width: 350px; /* Maximum width */
+        margin: 20px auto; /* Center the alert */
+        padding: 15px; /* Padding inside the alert */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    .small-alert strong {
+        display: block; /* Make the strong text block-level */
+        font-size: 1.2em; /* Increase font size */
+        margin-bottom: 5px; /* Space below the strong text */
+    }
+
+    .small-alert .close {
+        font-size: 1.5em; /* Increase close button size */
+        color: #fff; /* White close button */
+    }
+
+    /* Optional: Customize the background and border colors */
+    .small-alert {
+        background-color: #d4edda; /* Light green background */
+        border-color: #c3e6cb; /* Darker green border */
+    }
+</style>
+
 
 <style type="text/css">
 
@@ -22,6 +50,16 @@ only screen and (max-width: 430px){
 
       @php $subtitle="顧客管理"; @endphp
       @include('components.subtitle')
+      @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show small-alert" role="alert">
+        <strong>成功しました!</strong> {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+
 
       <section class="ts-contact-form">
          <div class="container">
@@ -208,5 +246,16 @@ only screen and (max-width: 430px){
             <img class="shap1" src="images/shap/home_schedule_memphis2.png" alt="">
          </div> -->
     </section>
+    <script>
+    $(document).ready(function() {
+        @if(session('success'))
+            // Show success alert
+            $('.alert').fadeIn().delay(3000).fadeOut(); // Change duration as needed
+
+            // Optionally show the modal
+            $('#myModal').modal('show');
+        @endif
+    });
+</script>
 
 </x-auth-layout>

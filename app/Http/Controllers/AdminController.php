@@ -71,43 +71,51 @@ class AdminController extends Controller
                      })
                     ->orderBy('created_at', 'desc')->paginate(9999);
         // print_r($pics);die;
-        
 
         foreach ($pics as $key => $value) {
             // echo $value->email;
             // echo $value->name;
               if (!empty($value->email)) {
-                $info = array('name'=>$value->name);
-                $mail = Mail::send([], $info, function($message) use ($value, $data) {
-                   $message->to($value->email,$value->name)->subject($data->name);
-                   $message->from('info-test@asia-hd.com','test-gyomu.24expo-japan.com');
-                   $message->setBody("以下、展示情報をご案内いたします。
-                   \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-                   \r\n商品名：　".$data->name."
-                   \r\n商品番号：　".$data->taskno."
-                   \r\n"."商品日：　".$data->taskdate."
 
-                   \r\n"."カテゴリー：　".__(config('global.category')[$data->category])."
-                   \r\n
-                   \r\n"."商品詳細：　"."　
-                   \r\n".str_replace("<br />","\r\n",$data->taskcontent)."
-                   \r\n
+                $exhibit = [
+                    'subject' => $data->subject,
+                    'goods_content' => $data->goods_content,
+                    'exhibitname' => $data->name,
+                    'exhibittaskno' => $data->taskno,
+                    'phone' => $data->taskdate,
+                    'category' => $data->category,
+                    'taskcontent' => $data->taskcontent,
+                ];
 
-                   \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝");
-                });
+                \Mail::to($value->email)->send(new \App\Mail\Exhibit($data));
+
+                // $info = array('name'=>$value->name);
+                // $mail = Mail::send([], $info, function($message) use ($value, $data) {
+                //    $message->to($value->email,$value->name)->subject($data->name);
+                //    $message->from('info-test@asia-hd.com','test-gyomu.24expo-japan.com');
+                //    $message->setBody("以下、展示情報をご案内いたします。
+                //    \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+                //    \r\n商品名：　".$data->name."
+                //    \r\n商品番号：　".$data->taskno."
+                //    \r\n"."商品日：　".$data->taskdate."
+
+                //    \r\n"."カテゴリー：　".__(config('global.category')[$data->category])."
+                //    \r\n
+                //    \r\n"."商品詳細：　"."　
+                //    \r\n".str_replace("<br />","\r\n",$data->taskcontent)."
+                //    \r\n
+
+                //    \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝");
+                // });
               }
 
               // print_r($mail);die;
               $msg = __('contact.donesend');
 
-
         }
-
-
         return redirect('/admin/exhibit')->with('success','一斉に送信されました。');
         
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -115,6 +123,58 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
+
+     public function store(Request $request)
+    {
+        // Validate the incoming request data
+        // $request->validate([
+        //     'exhibit_id' => 'required|exists:exhibits,id',
+        //     'exhibit_name' => 'required|string|max:255',
+        //     'exhibit_taskno' => 'required|string|max:255',
+        //     'exhibit_taskauthor' => 'required|string|max:255',
+        //     'advertise_content' => 'required|string',
+        // ]);
+        // Find the existing email record and update it
+
+        DB::table('exhibit')->where('id', $request->exhibit_ID)->update([
+            'id' => $request->exhibit_id,
+            'name' => $request->exhibit_name,
+            // 'taskno' => $request->exhibit_taskno,
+            'subject' => $request->subject,
+            'goods_content' => $request->goods_content,
+        ]);
+
+        // Redirect back with a success message
+        return redirect('admin/exhibit')->with('success', '商品の内容が正常に更新されました。');
+
+    }
+
+    public function storetemplate(Request $request)
+    {
+      
+        $data=array('title'=>$request->title,
+                    "emailsubject"=>$request->emailsubject,
+                    "content"=>$request->content,
+                    // "created_at"=> new \DateTime(),
+                );
+
+            if ((empty($request->emailId)) ) {
+
+                $data["created_at"] = new \DateTime();
+    
+                DB::table('email_templates')->insert($data);
+    
+                $msg = __('user.doneapply');
+            } else {
+                
+                DB::table('email_templates')->where('id',$request->emailId)->update($data);
+                $msg = '更新されました。';
+                // die('aaa');
+            }
+
+        return redirect('admin/agent')->with('success', 'メール内容が正常に更新されました。');
+    }
+
     public function deleteexhibit(Request $request)
     {
 
@@ -185,13 +245,19 @@ class AdminController extends Controller
             })
             ->orderBy('taskdate', 'desc')
             ->paginate($limit);
+            $email_templates = DB::table('email_templates')
+            ->where(function($query) use ($kword, $start, $end) {
+             
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
 
         // Calculate total pages
         $ttl = $exhibits->total();
         $ttlpage = ceil($ttl / $limit);
 
         // Return view with data
-        return view('admin.indexexhibit', compact('exhibits', 'ttlpage', 'ttl'));
+        return view('admin.indexexhibit', compact('exhibits','email_templates', 'ttlpage', 'ttl'));
     }
 
 
@@ -2501,7 +2567,6 @@ class AdminController extends Controller
      */
     public function adminlogin($role)
     { 
-
         if (!empty(Auth::user()->role)) {
             return redirect('/'.Auth::user()->role);
         }
@@ -4221,26 +4286,39 @@ class AdminController extends Controller
                 'phone.regex' => '有効な電話番号を入力してください',
             ]);
 
+            $emailcontent = DB::table('email_templates')
+                        ->first();
+
             // die('asasas');
-            $inquiry_email = 'info@rm-support.jp';
+            $inquiry_email = 'info-test@asia-hd.com';
                 // $inquiry_email = 'ulhakim@yahoo.com';
 
-              $data = array('name'=>$request->name);
+            $data = [
+                'name' => $request->name,
+                'furiname' => $request->furiname,
+                'subject' => $emailcontent->emailsubject,
+                'emailcontent' => $emailcontent->content,
+                'email' => $request->email,
+                'content' => $request->message,
+                'adminemail' => $inquiry_email
+            ];
+
               if (!empty($request->email)) {
-                $mail = Mail::send([], $data, function($message) use ($request, $inquiry_email) {
-                   $message->to($inquiry_email, 'BEFAMOUS事務局')->subject($request->subject);
-                   $message->from($request->email,$request->name);
-                   $message->setBody("BEFAMOUS事務局公式サイトから、以下の問い合わせがありました。
-                   \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-                   \r\n名前：　".$request->name."
-                   \r\n名前(フリガナ)：　".$request->furiname."
-                   \r\n"."メールアドレス：　".$request->email."
-                   \r\n
-                   \r\n"."お問い合わせ内容：　
-                   \r\n".$request->message."
-                   \r\n
-                   \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝");
-                });
+                \Mail::to($inquiry_email)->send(new \App\Mail\Contact($data));
+                // $mail = Mail::send([], $data, function($message) use ($request, $inquiry_email) {
+                //    $message->to($inquiry_email, 'BEFAMOUS事務局')->subject($request->subject);
+                //    $message->from($request->email,$request->name);
+                //    $message->setBody("BEFAMOUS事務局公式サイトから、以下の問い合わせがありました。
+                //    \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+                //    \r\n名前：　".$request->name."
+                //    \r\n名前(フリガナ)：　".$request->furiname."
+                //    \r\n"."メールアドレス：　".$request->email."
+                //    \r\n
+                //    \r\n"."お問い合わせ内容：　
+                //    \r\n".$request->message."
+                //    \r\n
+                //    \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝");
+                // });
               }
 
               // print_r($mail);die;

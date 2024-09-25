@@ -1,6 +1,6 @@
 <x-auth-layout>
 
-      @php $subtitle=__('商品管理'); @endphp
+      @php $subtitle=__('メール管理'); @endphp
       @include('components.subtitle')
 
       <section class="ts-contact-form">

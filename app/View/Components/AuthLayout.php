@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
+use Illuminate\Support\Facades\DB;
 
 class AuthLayout extends Component
 {
@@ -13,6 +14,16 @@ class AuthLayout extends Component
      */
     public function render()
     {
-        return view('layouts.auth');
+        $exhibits = DB::table('exhibit')      
+                ->orderBy('taskdate', 'desc')
+                ->paginate(9999);
+
+        $email_data = DB::table('email_templates')      
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+        return view('layouts.auth', [
+            'exhibits' => $exhibits,
+            'emailData' => $email_data,
+        ]);
     }
 }

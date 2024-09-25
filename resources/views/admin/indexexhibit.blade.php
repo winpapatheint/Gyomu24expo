@@ -223,21 +223,37 @@ only screen and (max-width: 430px){
                      </div>
                      <form method="POST" action="{{ route('sendemailexhibit') }}" >
                         @csrf
-                     <div class="modal-body">
-
+                        <div class="modal-body">
                            <div class="form-group">
-                              <label for="end"><b>担当者種別</b></label>
+                              <label for="agerange"><b>担当者種別</b></label>
                               <select class="form-control" name="agerange" id="agerange" 
-                                    style="padding-top: 10px;padding-bottom: 10px;height: 48px;">
-                                @foreach (config('global.agerange') as $key => $value)
-                                  <option value="{{$key}}">{{__($value)}}</option>
-                                @endforeach
+                                       style="padding-top: 10px; padding-bottom: 10px; height: 48px;">
+                                    @foreach (config('global.agerange') as $key => $value)
+                                       <option value="{{ $key }}">{{ __($value) }}</option>
+                                    @endforeach
                               </select>
                               <p style="display:none" class="agerange error text-danger"></p>
                            </div>
 
-                        <p>一斉に送信しますか？</p>
-                     </div>
+    <!-- <p>一斉に送信しますか？</p>
+
+    <div class="form-group">
+        <label><b>送信方法</b></label>
+        <div class="form-check">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" name="send_method" id="sendMethodEmail" value="email" required>
+            <label class="form-check-label" for="sendMethodEmail">
+                TemplateOne
+            </label>
+        </div>
+        <div class="form-check">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="form-check-input" type="radio" name="send_method" id="sendMethodSMS" value="sms" required>
+            <label class="form-check-label" for="sendMethodSMS">
+            TemplateTwo
+            </label>
+        </div>
+    </div> -->
+</div>
+
                      <div class="modal-footer">
                       
                         <input type="hidden" name="id" value="{{ $exhibit->id }}">

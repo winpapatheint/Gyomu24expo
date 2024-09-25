@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HcompanyController;
 use App\Http\Controllers\HostController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\EmailTemplateController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +19,9 @@ use App\Http\Controllers\UserController;
 */
 Route::post('sendemailexhibit', [AdminController::class, 'sendemailexhibit'])
                 ->middleware(['auth', 'verified'])->name('sendemailexhibit');
+
+Route::post('/email-management', [AdminController::class, 'store'])->name('email.management.update');
+Route::post('/email-management/store', [AdminController::class, 'storetemplate'])->name('email.management.store');
 
 Route::post('deleteexhibit', [AdminController::class, 'deleteexhibit'])
                 ->middleware(['auth', 'verified'])->name('deleteexhibit');
@@ -340,5 +343,9 @@ Route::get('/seminaredit/{seminarid}', [SeminarController::class, 'seminaredit']
 Route::get('/booktest', [UserController::class, 'indexbooktest'])->middleware(['auth', 'verified','role:user'])->name('booktest');
 
 Route::resource('seminars', SeminarController::class);
+
+Route::get('admin/email-templates', [EmailTemplateController::class, 'index'])->middleware(['auth', 'verified','role:admin']);
+Route::get('admin/email-templates/create', [EmailTemplateController::class, 'create'])
+                ->middleware(['auth', 'verified'])->name('email-templates.create');
 
 require __DIR__.'/auth.php';

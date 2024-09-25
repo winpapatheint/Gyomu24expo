@@ -233,6 +233,9 @@ print_r(session()->all());
                               @if(auth()->user()->id == '1')
                               <li><a href="{{ url('/admin/topsetting') }}">会社情報</a></li>
                               @endif
+                              <li><a href="{{ url('/admin/topsetting') }}" data-toggle="modal" data-target="#emailManagementModal">商品のメール管理タイプ1</a></li>
+                              <li><a href="{{ url('/admin/topsetting') }}" data-toggle="modal" data-target="#emailManagementModaltwo">メール管理タイプ2</a></li>
+                              
                         </ul>
                      </li>
 
@@ -513,6 +516,242 @@ print_r(session()->all());
       </div>
       <!-- ts footer area end-->
 
+<!-- Modal -->
+
+<div class="modal fade" id="emailManagementModal" tabindex="-1" role="dialog" aria-labelledby="emailManagementModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailManagementModalLabel">メール管理</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="emailManagementForm" action="{{ route('email.management.update') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="exhibitSelect">商品の選択</label>
+                        <select class="form-control" id="exhibitSelect" name="exhibit_id"  onchange="updateExhibitDetails()">
+                            <option value="">商品の選択</option>
+                            @foreach($exhibits as $exhibit)
+                                <option value="{{ $exhibit->id }}" data-id="{{ $exhibit->id }}"
+                                 data-name="{{ $exhibit->name }}" data-taskno="{{ $exhibit->taskno }}"
+                                  data-taskauthor="{{ $exhibit->taskauthor }}" data-goodscontent="{{ $exhibit->goods_content }}"
+                                  data-subject="{{ $exhibit->subject }}">{{ $exhibit->name }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback" id="exhibitSelectError" style="display: none;">
+                            商品を選択してください
+                        </div>
+                    </div>
+                  
+                        <input type="hidden" class="form-control" id="exhibitID" name="exhibit_ID"  >
+                    
+
+                    <div class="form-group">
+                        <label for="exhibitName">商品名</label>
+                        <input type="text" class="form-control" id="exhibitName" name="exhibit_name" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exhibitTaskno">商品番号</label>
+                        <input type="text" class="form-control" id="exhibitTaskno" name="exhibit_taskno" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">件名</label>
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="件名">
+                        <!-- <div class="invalid-feedback" id="subjectError" style="display: none;">
+                            件名を入力してください
+                        </div> -->
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label for="exhibitTaskauthor">登録者</label>
+                        <input type="text" class="form-control" id="exhibitTaskauthor" name="exhibit_taskauthor" readonly>
+                    </div> -->
+                     <div class="form-group">
+                        <label for="goodsContent">商品内容</label> <!-- Label for the textarea -->
+                        <textarea class="form-control" id="exhibitgoodsContent" name="goods_content" rows="4" placeholder="商品内容を入力してください"></textarea> 
+                        <!-- <div class="invalid-feedback" id="goodsContentError" style="display: none;">
+                            商品内容を入力してください
+                        </div> -->
+                    </div>
+
+                    <button type="submit" class="btn ">登録する</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+              
+            </div> -->
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="emailManagementModaltwo" tabindex="-1" role="dialog" aria-labelledby="emailManagementModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailManagementModalLabel">メール管理</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="emailManagementFormtwo" action="{{ route('email.management.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" id="emailId" name="emailId" value="{{ $emailData->id ?? '' }}"> <!-- Hidden field for ID -->
+
+                    <div class="form-group">
+                        <label for="title">タイトル</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="タイトル" value="{{ $emailData->title ?? '' }}">
+                        <div class="invalid-feedback" id="titleError" style="display: none;">
+                            タイトルを入力してください
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailsubject">件名</label>
+                        <input type="text" class="form-control" id="emailsubject" name="emailsubject" placeholder="件名" value="{{ $emailData->emailsubject ?? '' }}">
+                        <div class="invalid-feedback" id="emailsubjectError" style="display: none;">
+                            件名を入力してください
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label for="image">画像</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        <div class="invalid-feedback" id="imageError" style="display: none;">
+                            画像をアップロードしてください
+                        </div>
+                    </div> -->
+
+                    <div class="form-group">
+                        <label for="content">内容</label>
+                        <textarea class="form-control" id="content" name="content" rows="4" placeholder="内容を入力してください" value="{{ $emailData->content ?? '' }}">{{ $emailData->content ?? '' }}</textarea>
+                        <div class="invalid-feedback" id="contentError" style="display: none;">
+                            内容を入力してください
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn ">登録する</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function updateExhibitDetails() {
+        const select = document.getElementById('exhibitSelect');
+        const selectedOption = select.options[select.selectedIndex];
+        const exhibitID = selectedOption.getAttribute('data-id');
+        const exhibitName = selectedOption.getAttribute('data-name');
+        const exhibitPhone = selectedOption.getAttribute('data-taskno');
+        const exhibitTaskauthor = selectedOption.getAttribute('data-taskauthor');
+        const exhibitSubject = selectedOption.getAttribute('data-subject');
+        const exhibitGoodscontent = selectedOption.getAttribute('data-goodscontent');
+
+        document.getElementById('exhibitID').value = exhibitID || '';
+        document.getElementById('exhibitName').value = exhibitName || '';
+        document.getElementById('exhibitTaskno').value = exhibitPhone || '';
+        document.getElementById('exhibitgoodsContent').value = exhibitGoodscontent || '';
+        document.getElementById('subject').value = exhibitSubject || '';
+    }
+</script>
+<script>
+    document.getElementById('emailManagementForm').onsubmit = function(event) {
+ 
+        event.preventDefault(); // Prevent default form submission
+        // Clear previous error messages
+        // document.getElementById('exhibitSelectError').style.display = 'none';
+        // document.getElementById('subjectError').style.display = 'none';
+        // document.getElementById('goodsContentError').style.display = 'none';
+   
+        // Validate fields
+        const exhibitSelect = document.getElementById('exhibitSelect');
+ 
+        const subject = document.getElementById('subject');
+        const exhibitgoodsContent = document.getElementById('exhibitgoodsContent');
+        let isValid = true;
+
+        if (!exhibitSelect.value) {
+            document.getElementById('exhibitSelectError').style.display = 'block';
+            isValid = false;
+        }
+ 
+        // if (!subject.value) {
+        //     document.getElementById('subjectError').style.display = 'block';
+        //     isValid = false;
+        // }
+
+        // if (!exhibitgoodsContent.value) {
+        //     document.getElementById('goodsContentError').style.display = 'block';
+        //     isValid = false;
+        // }
+
+        // If valid, submit the form
+        if (isValid) {
+            this.submit();
+        }
+    };
+</script>
+
+
+
+<script>
+    document.getElementById('emailManagementFormtwo').onsubmit = function(event) {
+
+        event.preventDefault(); // Prevent default form submission
+        // Clear previous error messages
+        // document.getElementById('exhibitSelectError').style.display = 'none';
+        // document.getElementById('subjectError').style.display = 'none';
+        // document.getElementById('goodsContentError').style.display = 'none';
+   
+        // Validate fields
+        const title = document.getElementById('title');
+        const emailSubject = document.getElementById('emailsubject');
+        const image = document.getElementById('image');
+        const content = document.getElementById('content');
+
+        let isValid = true;
+      
+        if (!title.value) {
+           
+            document.getElementById('titleError').style.display = 'block';
+            isValid = false;
+        }
+
+        if (!emailSubject.value) {
+
+            document.getElementById('emailsubjectError').style.display = 'block';
+            isValid = false;
+        }
+
+        // if (!image.value) {
+
+        //     document.getElementById('imageError').style.display = 'block';
+        //     isValid = false;
+        // }
+
+        if (!content.value) {
+            document.getElementById('contentError').style.display = 'block';
+            isValid = false;
+        }
+
+        // If valid, submit the form
+        if (isValid) {
+            this.submit();
+        }
+    };
+
+</script>
 
 
 
