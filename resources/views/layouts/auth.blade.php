@@ -11,14 +11,11 @@
    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/png" sizes="32x32"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
    <!-- Site Title -->
    <title>顧客管理システム</title>
-
-
-
 <style type="text/css">
-  
 .badgenoti {
     top: 10px;
     right: 10px;
@@ -28,49 +25,37 @@
     background: red;
     color: white;
 }
-
 .overflow {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
-
 .table th {
     padding: 0rem; 
     vertical-align: inherit !important;
     border-top: 1px solid #e9ecef;
     font-weight: 400;
 }
-
 table tr{
    height: 40px;
 }
-
 table tbody{
   background: #f0f3ff;
 }
-
 table thead {
   background: #304586;
   color: white;
 }
-
 .table td {
   vertical-align: middle;
   padding-left: 0.45rem;
   padding-right: 0.45rem;
 }
-
 </style>
-
-
-
-
    <!-- CSS
          ================================================== -->
    <!-- Bootstrap -->
    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-
    <!-- FontAwesome -->
    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
    <!-- Animation -->
@@ -87,13 +72,9 @@ table thead {
    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
    <!-- Responsive styles-->
    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
-
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
   <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <script>
-
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
@@ -106,11 +87,7 @@ table thead {
       alert(JSON.stringify(data));
     });
   </script>
-
-  
-
    <style>
-
       .btnlist {
           font-size: 14px;
           font-weight: 200;
@@ -131,18 +108,15 @@ table thead {
           text-decoration: none;
           cursor: pointer;
       }
-
       .btn-danger,
       .btn-danger:hover {
          background-color: #c82333;
       }
-
       .btn-success,
       .btn-success:hover {
          background-color: #218838;
          color: white;
       }
-
      .btn-primary,
      .btn-primary:hover {
          background-color: #0069d9;
@@ -160,7 +134,6 @@ table thead {
          background-color: #9eb8d3;
          color: white;
       }
-
       .btn-warning,
       .btn-warning:hover {
          background-color: #d39e00;
@@ -175,9 +148,7 @@ table thead {
 </head>
 <!-- 
 @php
-
 print_r(session()->all());
-
 @endphp -->
 
 <body>
@@ -211,7 +182,6 @@ print_r(session()->all());
                      <li class="nav-item"><a href="{{ url('/admin/nego') }}">商談管理</a></li>
                      <li class="nav-item"><a href="{{ url('/admin/agreement') }}">契約管理</a></li>
 
-
                      <li class="dropdown nav-item active">
                         <a href="#" class="" data-toggle="dropdown">帳簿管理 <i class="fa fa-angle-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
@@ -220,7 +190,6 @@ print_r(session()->all());
                               <li><a href="{{ url('/admin/order') }}">注文書管理</a></li>
                               <li><a href="{{ url('/admin/invoice') }}">請求書管理</a></li>
                               <li><a href="{{ url('/admin/bill?start='.date('Y-m-01').'&end='.date('Y-m-t') ) }}">売上管理</a></li>
-
                         </ul>
                      </li>
 
@@ -257,8 +226,6 @@ print_r(session()->all());
                      <li class="nav-item"><a href="{{ url('/hcompany/bill') }}">{{ __('auth.managebill') }}</a></li>
 
                      <li class="nav-item"><a href="{{ url('/edit/agent/'.rand ( 10000 , 99999 )) }}">{{ __('welcome.profileedit') }}</a></li>
-
-
 
                      @elseif (auth()->user()->role == 'host')
                      <li class="nav-item"><a href="{{ url('/host/seminars') }}">{{ __('welcome.managetask') }}</a></li>
@@ -298,7 +265,6 @@ print_r(session()->all());
                               <li><a><i class="fa fa-circle-o" style="padding-right: 8px" aria-hidden="true"></i>セミナー登録</a></li> -->
                         </ul>
                      </li>
-
 
                      <li class="header-ticket nav-item">
                       @if (session()->has('isadmincontrol'))
@@ -395,12 +361,7 @@ print_r(session()->all());
                         }
                       });        
                 }
-
-
                 $(document).ready(function() {
-
-                   
-
                   $(".askconfirm").click(function(e){
                       // console.log($(this).closest("form").attr("id"));
                       
@@ -408,13 +369,9 @@ print_r(session()->all());
                       askconfirmboxshow($(this));
 
                   }); 
-
                 });
 
               </script>
-
-
-
 
                <div class="modal fade" id="noti" tabindex="-1" role="dialog" aria-labelledby="notiLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
@@ -437,7 +394,6 @@ print_r(session()->all());
                   </div>
                   </div>
                </div>
-
 
       <!-- ts footer area start-->
       <div class="footer-area">
@@ -780,13 +736,9 @@ print_r(session()->all());
 
       <!-- Template custom -->
       <script src="{{ asset('js/main.js') }}"></script>
-
    </div>
    <!-- Body inner end -->
 </body>
-
-
-
 
 <script type="text/javascript">
   
@@ -798,16 +750,12 @@ print_r(session()->all());
       //     })
       // });
 
-
-
     checknoti();
-
 
     $('#noti').on('hidden.bs.modal', function () {
         checknoti();
     })
 
-    
     function myFunction(notidata) {
       // alert(title);
       console.log(notidata.doneread);
@@ -900,9 +848,7 @@ print_r(session()->all());
             }
         });
            
-
     }
-
 
     function markread(readnoti) {
 
@@ -934,9 +880,7 @@ print_r(session()->all());
             }
         });
            
-
     }
-
 
     function urlify(text) {
       var urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -948,7 +892,4 @@ print_r(session()->all());
     }
 
 </script>
-
-
-
 </html>

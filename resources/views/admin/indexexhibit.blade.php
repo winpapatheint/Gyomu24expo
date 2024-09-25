@@ -1,6 +1,8 @@
 <x-auth-layout>
 
 <link rel="stylesheet" href="{{ asset('css/tableresponsive.css') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 
 <style type="text/css">
 
@@ -82,7 +84,7 @@ only screen and (max-width: 430px){
 
             <!-- Seminar list-->
             <div class="row">
-               <div class="table-responsive">
+               <div class="table-responsive" style="overflow-x: auto;">
                   <table class="table">
                      <thead>
                         <tr>
@@ -125,10 +127,7 @@ only screen and (max-width: 430px){
                               @endif
                           </td>
                         </tr>
-                        @endforeach
-
-
-                                                                                                                                                          
+                        @endforeach                                                                                                                  
                       </tbody>
                   </table>
 
@@ -232,6 +231,23 @@ only screen and (max-width: 430px){
                                        <option value="{{ $key }}">{{ __($value) }}</option>
                                     @endforeach
                               </select>
+                              
+                              <label for="email">登録日</label>
+                              <input class="form-control form-control-email" placeholder=""
+                                 type="text" value="{{ $exhibit->taskdate }}">
+                              <label for="email">商品名</label>
+                              <input class="form-control form-control-email" placeholder=""
+                                 type="text" value="{{ $exhibit->name }}">
+                              <label for="email">商品番号</label>
+                              <input class="form-control form-control-email" placeholder=""
+                                 type="text" value="{{ $exhibit->taskno }}">
+                              <label for="email">カテゴリー</label>
+                              <input class="form-control form-control-email" placeholder=""
+                                 type="text" value="{{ $exhibit->category }}">
+                              <label for="email">商品詳細</label>
+                              <input class="form-control form-control-email" placeholder=""
+                                 type="text" value="{!!  $exhibit->taskcontent !!}">
+
                               <p style="display:none" class="agerange error text-danger"></p>
                            </div>
 

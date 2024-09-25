@@ -61,7 +61,6 @@ class AdminController extends Controller
         // $data = (array) $data;
 
         // print_r($data);die;
-
         $agerange = $request->agerange;
         $pics = DB::table('pic')
                     ->where(function($query) use ($agerange){
@@ -72,6 +71,7 @@ class AdminController extends Controller
                     ->orderBy('created_at', 'desc')->paginate(9999);
         // print_r($pics);die;
 
+        
         foreach ($pics as $key => $value) {
             // echo $value->email;
             // echo $value->name;
@@ -98,15 +98,7 @@ class AdminController extends Controller
                 //    \r\n商品名：　".$data->name."
                 //    \r\n商品番号：　".$data->taskno."
                 //    \r\n"."商品日：　".$data->taskdate."
-
-                //    \r\n"."カテゴリー：　".__(config('global.category')[$data->category])."
-                //    \r\n
-                //    \r\n"."商品詳細：　"."　
-                //    \r\n".str_replace("<br />","\r\n",$data->taskcontent)."
-                //    \r\n
-
-                //    \r\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝");
-                // });
+               
               }
 
               // print_r($mail);die;

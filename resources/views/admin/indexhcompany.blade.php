@@ -202,7 +202,7 @@ only screen and (max-width: 430px){
                         <p>{{ __('事業内容') }} : <br>{!! $hcompany->companycontent !!} </p>
                         <p>{{ __('auth.url') }} : {{ $hcompany->url }} </p>
                         <p>{{ __('auth.sns') }} : {{ $hcompany->sns }} </p>
-                        <p>{{ __('備考') }} : <br>{!! $hcompany->remarks !!} </p>
+                        <p>{{ __('商品詳細') }} : <br>{!! $hcompany->remarks !!} </p>
 
                      </div>
                      <!-- <div class="modal-footer">
